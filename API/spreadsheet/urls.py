@@ -1,7 +1,7 @@
 from django.conf.urls import url
-from . import views
+from spreadsheet.views import sheets as st
 
 urlpatterns = [
-    url(r'^$', views.index),
-    url(r'^getAllData/$', views.getAllData),
+    url(r'^$', st.index),
+    url(r'^getAllData/$', st.getAllData),
 ]

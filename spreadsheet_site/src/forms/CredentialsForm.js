@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import React, { Component } from 'react';
+import $ from 'jquery';
 
 // Custom css code
 const containerStyle = {
@@ -13,25 +14,20 @@ class CredentialsForm extends Component {
 
   handleSubmit(event) {
 		event.preventDefault();
-		
-		const headers = new Headers({
-			'Content-Type': 'application/json',
-			"Access-Control-Allow-Origin": '*'
+
+ 		$.ajax({
+            url: "http://localhost:8000/getAllData/",
+            type: "GET",
+            crossDomain: true,
+            dataType: "json",
+            success: function (response) {
+				// Render excel table
+				console.log(response[0]);
+            },
+            error: function (xhr, status) {
+                console.log(status);
+            }
 		});
-
-		const options = {
-			method: 'GET',
-			headers,
-			mode: 'no-cors',
-		}
-		//const req = new Request('http://localhost:8000/getAllData/', options);
-		fetch('http://localhost:8000/getAllData/', options)
-			.then((resp) => resp) // Transform the data into json
-				.then(function(data) {
-					// Create and append the li's to the ul
-					console.log(data);
-				});
-
 	}
 
   render() {

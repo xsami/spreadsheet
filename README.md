@@ -12,8 +12,9 @@ You need to have installed:
 1. Open your `terminal` or `command-line`
 2. Using pip/easy_pip you need to install `pip install gspread oauth2client`
 3. Change the directory to the API with `cd API\`
-4. Run the API server `python manage.py runserver`
-5. Change the directory of the client with `cd ..\spreadsheet_site\`
-6. Run the command `npm install`
-7. Run the command `npm start`
-8. Open your browser on `localhost:3000`
+4. Install the following dependency `pip install django-cors-headers`
+5. Run the API server `python manage.py runserver`
+6. Change the directory of the client with `cd ..\spreadsheet_site\`
+7. Run the command `npm install`
+8. Run the command `npm start`
+9. Open your browser on `localhost:3000`
