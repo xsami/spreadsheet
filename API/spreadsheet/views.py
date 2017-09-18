@@ -1,10 +1,19 @@
 from django.http import JsonResponse, HttpResponse
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+import json
 
 def index(request):
     return HttpResponse('<h3>Welcome Message</h3>')
 
-def getAllUsers(request):
-    if request.method == 'GET':
-        name = ['jhon', 'francky', 'steve', 'jenny', 'will']
-        return JsonResponse({'users': name})
-    return JsonResponse({'error': 'invalid request type'})
+def getAllData(request):
+    FILE_NAME = 'demo' # file name
+
+    scope = ['https://spreadsheets.google.com/feeds']
+    creds = ServiceAccountCredentials.from_json_keyfile_name('spreadsheet/credentials/client_secret.json', scope)
+    client = gspread.authorize(creds)
+
+    sheet = client.open(FILE_NAME).sheet1
+    data = sheet.get_all_records()
+
+    return JsonResponse({'data': 'bar'})
