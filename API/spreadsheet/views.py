@@ -16,4 +16,4 @@ def getAllData(request):
     sheet = client.open(FILE_NAME).sheet1
     data = sheet.get_all_records()
 
-    return JsonResponse({'data': 'bar'})
+    return JsonResponse(data, safe=False)
