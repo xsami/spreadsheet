@@ -15,42 +15,26 @@ class CredentialsForm extends Component {
 
   constructor(props) {
 		super(props);
-		this.getExcelData = this.getExcelData.bind(this);		
+		this.handleSubmit = this.handleSubmit.bind(this);		
 		this.state = {
-			excelData: [] //this.getExcelData().bind(this)
+			excelData: [{"Telephone": "849-859-5521", "Address": "WachingTonHigh", "Name": "Rolando", "ID": 1}, {"Telephone": "809-569-3269", "Address": "Dem c\\Perez", "Name": "Juancho Tacorta", "ID": 25}, {"Telephone": "809-256-1314", "Address": "Junior st.AG apt.Carier", "Name": "Billy Jean", "ID": 54}, {"Telephone": "808-123-4454", "Address": "Villa Francisca, Ave. Inmortales #33", "Name": "Edward Snow", "ID": 22}]
 		};
-  }
-
-  getExcelData(event) {
-		event.preventDefault();
-
-	  return $.ajax({
-								url: "http://localhost:8000/getAllData/", // TODO: Get api address from config file
-								type: "GET",
-								crossDomain: true,
-								dataType: "json",
-								success: function (response) {
-									this.setState({
-										excelData: response
-									});
-									return (response[0]);
-								},
-								error: function (xhr, status) {
-									return (status);
-								}
-							});
   }
 
   handleSubmit(event) {
 		event.preventDefault();
 
- 		$.ajax({
+		this.setState({
+			excelData: [{"Text": "demo"}, {"giveme": 'pesos'}]
+		});
+		
+ 		return $.ajax({
             url: "http://localhost:8000/getAllData/", // TODO: Get api address from config file
             type: "GET",
             crossDomain: true,
             dataType: "json",
             success: function (response) {
-								return (response[0]);
+				return (response[0]);
             },
             error: function (xhr, status) {
                 return (status);
@@ -61,7 +45,7 @@ class CredentialsForm extends Component {
   render() {
 		return (
 			<div className='container' style={containerStyle}>
-				<form onSubmit={this.getExcelData}>  
+				<form onSubmit={this.handleSubmit}>  
 					<div className='form-group row'>
 						<label style={labelText}>Credentials</label>
 						<div className="col-10">
@@ -76,7 +60,7 @@ class CredentialsForm extends Component {
 						<button type='submit' className='btn btn-default'>Submit</button>
 					</div>
 				</form>
-				<DataTable>{this.state.excelData}</DataTable>
+				<DataTable handleSubmit={this.handleSubmit}>{this.state.excelData}</DataTable>
 			</div>
 		);
   }

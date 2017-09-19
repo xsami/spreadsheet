@@ -8,14 +8,17 @@ class RowDataTable extends Component {
 	constructor(props) {
 		super(props);
 		this.rows = props.children;
+		this.state = {
+			rows: this.rows
+		}
 	}
 
 	render() {
 		return (
 			<tr>
 				{
-					Object.values(this.rows).reverse().map( (obj) =>
-						<td>
+					Object.values(this.rows).reverse().map( (obj, i) =>
+						<td key={i}>
 							{obj} 
 						</td>
 					)
@@ -31,6 +34,9 @@ class HeaderDataTable extends Component {
 		constructor(props) {
 			super(props);
 			this.headers = props.children;
+			this.state = {
+				headers: this.headers
+			}
 		}
 
 		render() {
@@ -38,8 +44,8 @@ class HeaderDataTable extends Component {
 				<thead>
 					<tr>
 						{
-							this.headers.reverse().map((h, i) =>
-									<th>
+							this.state.headers.reverse().map((h, i) =>
+									<th key={i}>
 										{h}
 									</th>
 							)
@@ -58,11 +64,14 @@ class DataTable extends Component {
 	constructor(props) {
 		super(props);
 
-		this.rows = props.children; // Getting the rows 
-		console.log(this.rows);
+		this.rows = props.children; 
 		// Getting the header keys
 		for (var key in this.rows[0]) {
 			this.headers.push(key);
+		}
+		this.state = {
+			rows: this.rows,
+			headers: this.headers
 		}
 
 	}
@@ -71,11 +80,11 @@ class DataTable extends Component {
 			return (
 					<div>
 					<table className="table">
-						<HeaderDataTable>{this.headers}</HeaderDataTable>
+						<HeaderDataTable>{this.state.headers}</HeaderDataTable>
 						<tbody>
 							{
-								this.rows.map( (r) =>
-										<RowDataTable>
+								this.state.rows.map( (r, i) =>
+										<RowDataTable key={i}>
 											{r}
 										</RowDataTable>
 								)
