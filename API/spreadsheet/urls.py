@@ -3,5 +3,5 @@ from spreadsheet.views import sheets as st
 
 urlpatterns = [
     url(r'^$', st.index),
-    url(r'^getAllData/$', st.getAllData),
+    url(r'^getalldata/$', st.getAllData),
 ]

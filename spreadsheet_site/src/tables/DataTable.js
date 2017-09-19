@@ -4,17 +4,11 @@ import React, { Component } from 'react';
 
 class RowDataTable extends Component {
 
-	rows = {}
-	constructor(props) {
-		super(props);
-		this.rows = props.dpx;
-	}
-
 	render() {
 		return (
 			<tr>
 				{
-					Object.values(this.rows).reverse().map( (obj, i) =>
+					Object.values(this.props.dpx).map( (obj, i) =>
 						<td key={i}>
 							{obj} 
 						</td>
@@ -26,19 +20,13 @@ class RowDataTable extends Component {
 }
 
 class HeaderDataTable extends Component {
-	
-		headers = []
-		constructor(props) {
-			super(props);
-			this.headers = props.dpx;
-		}
 
 		render() {
 			return (
 				<thead>
 					<tr>
 					{
-						this.headers.reverse().map((h, i) =>
+						this.props.th.map((h, i) =>
 								<th key={i}>
 									{h}
 								</th>
@@ -52,32 +40,20 @@ class HeaderDataTable extends Component {
 
 class DataTable extends Component {
 
-	rows = [];
-	headers = [];
-
-	constructor(props) {
-		super(props);
-
-		this.rows = props.dpx; 
-		for (var key in this.rows[0]) {
-			this.headers.push(key);
-		}
-	}
-
 	render() {
-			return (
-					<div>
-					<table className="table">
-						<HeaderDataTable dpx={this.headers} />
-						<tbody>
-							{ this.rows.map( (r, i) =>
-								<RowDataTable key={i} dpx={r} />
-								)
-							}
-						</tbody>
-					</table>
-			</div>
-			);
+		return (
+				<div>
+				<table className="table">
+					<HeaderDataTable th={this.props.th} />
+					<tbody>
+						{ this.props.dpx.map( (r, i) =>
+							<RowDataTable key={i} dpx={r} />
+							)
+						}
+					</tbody>
+				</table>
+		</div>
+		);
 	}
 }
 

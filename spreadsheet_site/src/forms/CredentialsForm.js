@@ -1,7 +1,9 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import React, { Component } from 'react';
 import DataTable from '../tables/DataTable.js';
-import $ from 'jquery';
+import axios from 'axios';
+import logo from '../logo.svg';
+import '../App.css';
 
 // Custom css code
 const containerStyle = {
@@ -15,46 +17,47 @@ class CredentialsForm extends Component {
 
   constructor(props) {
 		super(props);	
+
 		this.state = {
 			excelData: [],
-			change: false
+			th: [],
+			loadingStyle: { display: 'none', textAling: 'center' }
 		};
-  }
-
-  handleSubmit(event) {
-		event.preventDefault();
-
-		return false;
+	}
+	
+	updateTh = (data) => {
+		var arr = [];
+		for (var key in data[0])
+			arr.push(key);
+		this.setState({ th: arr });
 	}
 
-  updateExcel = () => {
-	  $.ajax({
-            url: "http://localhost:8000/getAllData/", // TODO: Get api address from config file
-            type: "GET",
-            crossDomain: true,
-            dataType: "json",
-            success: (response) => {
-				this.setState({ excelData: response});
-            },
-            error: function (xhr, status) {
-                console.log(status);
-            }
+	updateExcel = (data) => {
+		this.setState({ excelData: data});
+		this.updateTh(data);
+	}
+
+  loadExcel = () => {
+		this.setState({loadingStyle: {display: 'block'}});
+		axios.get('http://localhost:8000/getalldata/') // Get url from config file
+		.then((res) => {
+			this.updateExcel(res.data);
+			this.setState({loadingStyle: {display: 'none'}});
+		})
+		.catch( (err) => {
+			this.setState({excelData: []}, console.log(err));
+			this.setState({loadingStyle: {display: 'none'}});
 		});
-	this.setState({change: !this.state.change});
-  }
+	}
+	
 
   render() {
-	  var table = <DataTable dpx={this.state.excelData} />
-	  if (this.state.change) {
-		  table = <div></div>
-	  }
 		return (
 			<div className='container' style={containerStyle}>
 				<div>  
 					<div className='form-group row'>
 						<label style={labelText}>Credentials</label>
 						<div className="col-10">
-							{/* Input file label */}
 							<label className="custom-file">
 								<input type="file" id="file" className="custom-file-input" accept='.json' />
 								<span className="custom-file-control"></span>
@@ -62,10 +65,14 @@ class CredentialsForm extends Component {
 						</div>
 					</div>
 					<div className='form-group'>
-						<input type='button' className='btn btn-default' onClick={this.updateExcel} value="Update Excel" />
+						<input type='button' className='btn btn-default' onClick={this.loadExcel} value="Load Excel" />
 					</div>
 				</div>
-				{table}
+				<div style={this.state.loadingStyle} >
+					<img src={logo} className='App-logo' alt='loading'/>
+					<p>Loading...</p>
+				</div>
+				<DataTable dpx={this.state.excelData} th={this.state.th}  />
 			</div>
 		);
   }
