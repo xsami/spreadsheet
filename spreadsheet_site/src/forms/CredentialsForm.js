@@ -14,38 +14,43 @@ const labelText = {
 class CredentialsForm extends Component { 
 
   constructor(props) {
-		super(props);
-		this.handleSubmit = this.handleSubmit.bind(this);		
+		super(props);	
 		this.state = {
-			excelData: [{"Telephone": "849-859-5521", "Address": "WachingTonHigh", "Name": "Rolando", "ID": 1}, {"Telephone": "809-569-3269", "Address": "Dem c\\Perez", "Name": "Juancho Tacorta", "ID": 25}, {"Telephone": "809-256-1314", "Address": "Junior st.AG apt.Carier", "Name": "Billy Jean", "ID": 54}, {"Telephone": "808-123-4454", "Address": "Villa Francisca, Ave. Inmortales #33", "Name": "Edward Snow", "ID": 22}]
+			excelData: [],
+			change: false
 		};
   }
 
   handleSubmit(event) {
 		event.preventDefault();
 
-		this.setState({
-			excelData: [{"Text": "demo"}, {"giveme": 'pesos'}]
-		});
-		
- 		return $.ajax({
+		return false;
+	}
+
+  updateExcel = () => {
+	  $.ajax({
             url: "http://localhost:8000/getAllData/", // TODO: Get api address from config file
             type: "GET",
             crossDomain: true,
             dataType: "json",
-            success: function (response) {
-				return (response[0]);
+            success: (response) => {
+				this.setState({ excelData: response});
             },
             error: function (xhr, status) {
-                return (status);
+                console.log(status);
             }
 		});
-	}
+	this.setState({change: !this.state.change});
+  }
 
   render() {
+	  var table = <DataTable dpx={this.state.excelData} />
+	  if (this.state.change) {
+		  table = <div></div>
+	  }
 		return (
 			<div className='container' style={containerStyle}>
-				<form onSubmit={this.handleSubmit}>  
+				<div>  
 					<div className='form-group row'>
 						<label style={labelText}>Credentials</label>
 						<div className="col-10">
@@ -57,10 +62,10 @@ class CredentialsForm extends Component {
 						</div>
 					</div>
 					<div className='form-group'>
-						<button type='submit' className='btn btn-default'>Submit</button>
+						<input type='button' className='btn btn-default' onClick={this.updateExcel} value="Update Excel" />
 					</div>
-				</form>
-				<DataTable handleSubmit={this.handleSubmit}>{this.state.excelData}</DataTable>
+				</div>
+				{table}
 			</div>
 		);
   }

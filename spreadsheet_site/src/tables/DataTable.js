@@ -7,10 +7,7 @@ class RowDataTable extends Component {
 	rows = {}
 	constructor(props) {
 		super(props);
-		this.rows = props.children;
-		this.state = {
-			rows: this.rows
-		}
+		this.rows = props.dpx;
 	}
 
 	render() {
@@ -33,23 +30,20 @@ class HeaderDataTable extends Component {
 		headers = []
 		constructor(props) {
 			super(props);
-			this.headers = props.children;
-			this.state = {
-				headers: this.headers
-			}
+			this.headers = props.dpx;
 		}
 
 		render() {
 			return (
 				<thead>
 					<tr>
-						{
-							this.state.headers.reverse().map((h, i) =>
-									<th key={i}>
-										{h}
-									</th>
-							)
-						}
+					{
+						this.headers.reverse().map((h, i) =>
+								<th key={i}>
+									{h}
+								</th>
+						)
+					}
 					</tr>
 				</thead>
 			);
@@ -64,29 +58,20 @@ class DataTable extends Component {
 	constructor(props) {
 		super(props);
 
-		this.rows = props.children; 
-		// Getting the header keys
+		this.rows = props.dpx; 
 		for (var key in this.rows[0]) {
 			this.headers.push(key);
 		}
-		this.state = {
-			rows: this.rows,
-			headers: this.headers
-		}
-
 	}
 
 	render() {
 			return (
 					<div>
 					<table className="table">
-						<HeaderDataTable>{this.state.headers}</HeaderDataTable>
+						<HeaderDataTable dpx={this.headers} />
 						<tbody>
-							{
-								this.state.rows.map( (r, i) =>
-										<RowDataTable key={i}>
-											{r}
-										</RowDataTable>
+							{ this.rows.map( (r, i) =>
+								<RowDataTable key={i} dpx={r} />
 								)
 							}
 						</tbody>
