@@ -19,3 +19,7 @@ You need to have installed:
 8. Run the command `npm install`
 9. Run the command `npm start`
 10. Open your browser on `localhost:3000`
+
+# How to change the configuration
+
+On the website folder all the configuation for the `API` is defined on the following route: `spreadsheet_site\src\routes\serverConfig.js`.

@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import CredentialsForm from './forms/CredentialsForm'
+import App from './components/App/';
+import CredentialsForm from './components/CredentialsForm'
 import registerServiceWorker from './registerServiceWorker';
 
 ReactDOM.render(<App />, document.getElementById('root'));
