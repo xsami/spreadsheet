@@ -7,8 +7,9 @@ from django.conf import settings
 def index(request):
     return HttpResponse('<h3>Welcome Message</h3>')
 
-def getAllData(request):
-    FILE_NAME = 'demo' # file name on google drive
+def getAllData(request, file_name):
+    print request
+    FILE_NAME = file_name # file name on google drive
 
     scope = ['https://spreadsheets.google.com/feeds']
     creds = ServiceAccountCredentials.from_json_keyfile_name('spreadsheet/credentials/client_secret.json', scope)

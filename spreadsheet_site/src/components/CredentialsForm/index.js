@@ -1,11 +1,10 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import React, { Component } from 'react';
-import DataTable from '../tables/DataTable.js';
+import DataTable from '../DataTable/';
 import axios from 'axios';
-import logo from '../logo.svg';
-import '../App.css';
+import logo from '../../logo.svg';
+import config from '../../routes/serverConfig.js';
 
-// Custom css code
 const containerStyle = {
     margin: 15
 };
@@ -21,15 +20,20 @@ class CredentialsForm extends Component {
 		this.state = {
 			excelData: [],
 			th: [],
-			loadingStyle: { display: 'none', textAling: 'center' }
+			loadingStyle: { display: 'none', textAling: 'center' },
+			excel_name: '',
+			file_name: '',
 		};
 	}
 	
 	updateTh = (data) => {
+
 		var arr = [];
-		for (var key in data[0])
+		for (var key in data[0]) {
 			arr.push(key);
+		}
 		this.setState({ th: arr });
+
 	}
 
 	updateExcel = (data) => {
@@ -38,8 +42,11 @@ class CredentialsForm extends Component {
 	}
 
   loadExcel = () => {
+	  
+		var url = config.API_URL + config.GET_ALL_DATA + this.state.excel_name;
 		this.setState({loadingStyle: {display: 'block'}});
-		axios.get('http://localhost:8000/getalldata/') // Get url from config file
+		
+		axios.get(url)
 		.then((res) => {
 			this.updateExcel(res.data);
 			this.setState({loadingStyle: {display: 'none'}});
@@ -59,10 +66,14 @@ class CredentialsForm extends Component {
 						<label style={labelText}>Credentials</label>
 						<div className="col-10">
 							<label className="custom-file">
-								<input type="file" id="file" className="custom-file-input" accept='.json' />
-								<span className="custom-file-control"></span>
+								<input type="file" id="file" className="custom-file-input" accept='.json' onChange={data => { this.setState({file_name: data.target.value.split('\\').pop() });  }} />
+								<span className="custom-file-control">{this.state.file_name}</span>
 							</label>
 						</div>
+					</div>
+					<div className='form-group row'>
+						<label style={labelText}>Document Name</label>
+						<input type='text' className="form-control col-3" onChange={ event => {  this.setState({excel_name: event.target.value}); }} placeholder='demo'/>
 					</div>
 					<div className='form-group'>
 						<input type='button' className='btn btn-default' onClick={this.loadExcel} value="Load Excel" />
@@ -75,6 +86,6 @@ class CredentialsForm extends Component {
 				<DataTable dpx={this.state.excelData} th={this.state.th}  />
 			</div>
 		);
-  }
+	}
 }
 export default CredentialsForm;
