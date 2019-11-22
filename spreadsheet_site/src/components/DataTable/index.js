@@ -9,7 +9,7 @@ class RowDataTable extends Component {
 			<tr>
 				{
 					Object.values(this.props.dpx).map( (obj, i) =>
-						<td key={i}>
+						<td key={i} onClick={this.props.clk('click', i)}>
 							{obj} 
 						</td>
 					)
@@ -47,7 +47,7 @@ class DataTable extends Component {
 					<HeaderDataTable th={this.props.th} />
 					<tbody>
 						{ this.props.dpx.map( (r, i) =>
-							<RowDataTable key={i} dpx={r} />
+							<RowDataTable key={i} dpx={r} clk={this.props.action} />
 							)
 						}
 					</tbody>

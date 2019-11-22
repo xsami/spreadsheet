@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import DataTable from '../DataTable/';
 import axios from 'axios';
 import logo from '../../logo.svg';
-import config from '../../routes/serverConfig.js';
+// import config from '../../routes/serverConfig.js';
 
 const containerStyle = {
     margin: 15
@@ -23,6 +23,7 @@ class CredentialsForm extends Component {
 			loadingStyle: { display: 'none', textAling: 'center' },
 			excel_name: '',
 			file_name: '',
+			currentAction: () => {},
 		};
 	}
 	
@@ -41,9 +42,32 @@ class CredentialsForm extends Component {
 		this.updateTh(data);
 	}
 
-  loadExcel = () => {
+  loadOpts = () => {
+	this.loadExcel('http://localhost:3001/options')
+
+	this.setState({
+		currentAction: function(opt, id) {
+			console.log('options')
+			console.log({ opt, id })
+		}
+	})
+  }
+
+  loadCorps = () => {
+	this.loadExcel('http://localhost:3001/corps')
+
+	this.setState({
+		currentAction: function(opt, id) {
+			console.log('corps')
+			console.log({ opt, id })
+		}
+	})
+
+  }
+
+  loadExcel = (url) => {
 	  
-		var url = config.API_URL + config.GET_ALL_DATA + this.state.excel_name;
+		// var url = config.API_URL + config.GET_ALL_DATA + this.state.excel_name;
 		this.setState({loadingStyle: {display: 'block'}});
 		
 		axios.get(url)
@@ -62,28 +86,16 @@ class CredentialsForm extends Component {
 		return (
 			<div className='container' style={containerStyle}>
 				<div>  
-					<div className='form-group row'>
-						<label style={labelText}>Credentials</label>
-						<div className="col-10">
-							<label className="custom-file">
-								<input type="file" id="file" className="custom-file-input" accept='.json' onChange={data => { this.setState({file_name: data.target.value.split('\\').pop() });  }} />
-								<span className="custom-file-control">{this.state.file_name}</span>
-							</label>
-						</div>
-					</div>
-					<div className='form-group row'>
-						<label style={labelText}>Document Name</label>
-						<input type='text' className="form-control col-3" onChange={ event => {  this.setState({excel_name: event.target.value}); }} placeholder='demo'/>
-					</div>
 					<div className='form-group'>
-						<input type='button' className='btn btn-default' onClick={this.loadExcel} value="Load Excel" />
+						<input type='button' className='btn btn-default' onClick={this.loadCorps} value="Load Corporations" />
+						<input type='button' className='btn btn-default' onClick={this.loadOpts} value="Load Options" />
 					</div>
 				</div>
 				<div style={this.state.loadingStyle} >
 					<img src={logo} className='App-logo' alt='loading'/>
 					<p>Loading...</p>
 				</div>
-				<DataTable dpx={this.state.excelData} th={this.state.th}  />
+				<DataTable dpx={this.state.excelData} th={this.state.th} action={this.state.currentAction} />
 			</div>
 		);
 	}
