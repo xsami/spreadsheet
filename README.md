@@ -1,14 +1,14 @@
 # spreadsheet
 Progresive web app for google spreadsheet management
 
-# Prerequisites
+## Prerequisites
 You need to have installed:
 1. Python 2.7
 2. npm
 3. pip/easy_pip
 4. Have the following ports free: `3000` & `8000`
 
-# How to run
+## How to run
 1. Open your `terminal` or `command-line`
 2. Using pip/easy_pip you need to install `pip install gspread oauth2client`
 3. Change the directory to the API with `cd API\`
@@ -20,6 +20,9 @@ You need to have installed:
 9. Run the command `npm start`
 10. Open your browser on `localhost:3000`
 
-# How to change the configuration
+## How to change the configuration
 
 On the website folder all the configuation for the `API` is defined on the following route: `spreadsheet_site\src\routes\serverConfig.js`.
+
+### TODO
+* Integration with multiples spreadsheet
